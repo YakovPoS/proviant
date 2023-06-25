@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Delete, Param, ParseIntPipe } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { Roles } from 'src/roles/roles.decorator';
@@ -12,12 +12,12 @@ export class NewsController {
   async addNews(@Body() addNewsDto) {
     return this.newsService.addNews(addNewsDto.title, addNewsDto.description, addNewsDto.image );
   }
-  @Post('delete')
-  async deleteNews(@Body() deleteNewsDto) {
-    return this.newsService.deleteNews(deleteNewsDto.title, deleteNewsDto.description, deleteNewsDto.image );
+  @Delete('delete/:id')
+  async deleteNews(@Param('id',new ParseIntPipe())id:number) {
+    return this.newsService.deleteNews(id);
   }
-  @Post('change')
-  async changeNews(@Body() changeNewsDto) {
-    return this.newsService.changeNews(changeNewsDto.title, changeNewsDto.description, changeNewsDto.image );
+  @Post('change/:id')
+  async changeNews(@Param('id',new ParseIntPipe())id:number, @Body() changeNewsDto) {
+    return this.newsService.changeNews(id, changeNewsDto.title, changeNewsDto.description, changeNewsDto.image );
   }
 }
