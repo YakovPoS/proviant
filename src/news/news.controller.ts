@@ -1,10 +1,11 @@
-import { Controller, Post, UseGuards, Body, Delete, Param, ParseIntPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Delete, Param, ParseIntPipe, UseInterceptors, UploadedFile, Get } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { Roles } from 'src/roles/roles.decorator';
-import { Role } from 'src/roles/role.enum';
+import { Role } from 'src/roles/roles.enum';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { get } from 'http';
 
 @Controller('news')
 export class NewsController {
@@ -27,5 +28,6 @@ export class NewsController {
   async changeNews(@Param('id',new ParseIntPipe())id:number, @Body() changeNewsDto, @UploadedFile() file: Express.Multer.File) {
     return this.newsService.changeNews(id, changeNewsDto.title, changeNewsDto.description, file );
   }
+
 }
 
